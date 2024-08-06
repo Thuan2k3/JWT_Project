@@ -2,6 +2,7 @@ package com.jwtproject.demo.Config;
 
 
 import com.jwtproject.demo.Filter.JwtAuthFilter;
+import com.jwtproject.demo.JWT.JwtAuthenticationEntryPoint;
 import com.jwtproject.demo.Service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
+    @Autowired
+    private JwtAuthenticationEntryPoint point;
     @Autowired
     private JwtAuthFilter authFilter;
 
@@ -43,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/admin/**").authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
