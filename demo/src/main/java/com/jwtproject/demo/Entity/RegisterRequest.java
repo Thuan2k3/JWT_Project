@@ -1,0 +1,27 @@
+package com.jwtproject.demo.Entity;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+@Data
+public class RegisterRequest {
+    @NotBlank(message = "Name is required")
+    @Size(max = 50, message = "Name must be at most 50 characters long")
+    private String name;
+
+    @NotBlank(message = "Password is required")
+    @Size(max = 20, message = "Password must be at most 20 characters long")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    private String password;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @Size(max = 100, message = "Email must be at most 100 characters long")
+    private String email;
+    @NotBlank(message = "Phone number is required")
+    private String phoneNumber;
+    @NotBlank(message = "Roles is required")
+    private String roles;
+}

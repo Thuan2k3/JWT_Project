@@ -1,15 +1,18 @@
 package com.jwtproject.demo.Controller;
 
 import com.jwtproject.demo.Entity.AuthRequest;
+import com.jwtproject.demo.Entity.RegisterRequest;
 import com.jwtproject.demo.Entity.UserInfo;
 import com.jwtproject.demo.Reponse.GenerateTokenReponse;
 import com.jwtproject.demo.Reponse.ReponseObject;
 import com.jwtproject.demo.Repository.UserInfoRepository;
 import com.jwtproject.demo.Service.JwtService;
 import com.jwtproject.demo.Service.UserInfoService;
+import com.jwtproject.demo.Utils.Message;
 import com.jwtproject.demo.Utils.Util;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -44,9 +48,43 @@ public class UserController {
         return "Welcome this endpoint is not secure";
     }
 
+//    @PostMapping("/addNewUser")
+//    public String addNewUser(@RequestBody UserInfo userInfo) {
+//        return service.addUser(userInfo);
+//    }
     @PostMapping("/addNewUser")
-    public String addNewUser(@RequestBody UserInfo userInfo) {
-        return service.addUser(userInfo);
+    public ResponseEntity<ReponseObject> addNewUser(@Valid @RequestBody RegisterRequest registerRequest) {
+        // Create ReposeObject with default value
+        ReponseObject responseObject = ReponseObject.builder()
+                .statusCode(HttpStatus.OK.value())
+                .build();
+
+        try {
+            // Construct User object from RegisterRequest
+            UserInfo newUser = new UserInfo();
+            newUser.setEmail(registerRequest.getEmail());
+            newUser.setPassword(registerRequest.getPassword());
+            newUser.setName(registerRequest.getName());
+            newUser.setPhoneNumber(registerRequest.getPhoneNumber());
+            newUser.setRoles(registerRequest.getRoles());
+
+            // Handle user creation and update ResponseObject
+            boolean isCreated = service.addUser(newUser);
+            if (isCreated) {
+                responseObject.setMessage(Message.SUCCESS);
+                return new ResponseEntity<>(responseObject, HttpStatus.OK);
+            } else {
+                responseObject.setMessage(Message.FAIL);
+                responseObject.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            }
+        } catch (DataIntegrityViolationException exception) {
+            responseObject = ReponseObject.builder()
+                    .message(Message.VALIDATION_ERRORS)
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .data(Map.of("email", Message.EMAIL_EXIST))
+                    .build();
+        }
+        return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/user/userProfile")
