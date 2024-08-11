@@ -97,7 +97,7 @@ public class UserController {
 
     @PostMapping("/auth/login")
     public ResponseEntity<ReponseObject> authenticateAndGetToken(@Valid @RequestBody AuthRequest authRequest) {
-        Optional<UserInfo> user = this.userInfoRepository.findByEmail(authRequest.getUsername());
+        Optional<UserInfo> user = this.userInfoRepository.findByEmail(authRequest.getEmail());
         ReponseObject reponseObject;
         reponseObject = ReponseObject.builder()
                 .message("Fail")
@@ -106,8 +106,8 @@ public class UserController {
                 .build();
 
         if (Util.notNull(user)) {
-            this.doAuthenticate(authRequest.getUsername(), authRequest.getPassword());
-            UserDetails userDetails = service.loadUserByUsername(authRequest.getUsername());
+            this.doAuthenticate(authRequest.getEmail(), authRequest.getPassword());
+            UserDetails userDetails = service.loadUserByUsername(authRequest.getEmail());
             String accessToken = this.jwtService.generateToken(userDetails.getUsername());
             GenerateTokenReponse response = GenerateTokenReponse
                     .builder()
