@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1")
 public class UserController {
 
     @Autowired
@@ -52,8 +52,8 @@ public class UserController {
 //    public String addNewUser(@RequestBody UserInfo userInfo) {
 //        return service.addUser(userInfo);
 //    }
-    @PostMapping("/addNewUser")
-    public ResponseEntity<ReponseObject> addNewUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    @PostMapping("auth/register")
+    public ResponseEntity<ReponseObject> register(@Valid @RequestBody RegisterRequest registerRequest) {
         // Create ReposeObject with default value
         ReponseObject responseObject = ReponseObject.builder()
                 .statusCode(HttpStatus.OK.value())
@@ -99,7 +99,7 @@ public class UserController {
         return "Welcome to Admin Profile";
     }
 
-    @PostMapping("/generateToken")
+    @PostMapping("/auth/login")
     public ResponseEntity<ReponseObject> authenticateAndGetToken(@Valid @RequestBody AuthRequest authRequest) {
         Optional<UserInfo> user = this.userInfoRepository.findByEmail(authRequest.getUsername());
         ReponseObject reponseObject;

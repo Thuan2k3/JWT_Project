@@ -1,5 +1,6 @@
 package com.jwtproject.demo.Entity;
 
+import com.jwtproject.demo.Rules.MailRFCConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,7 +13,7 @@ import lombok.*;
 public class AuthRequest {
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @MailRFCConstraint
     private String username;
     @NotBlank(message = "Password is required")
     @Size(max = 20, message = "Password must be at most 20 characters long")

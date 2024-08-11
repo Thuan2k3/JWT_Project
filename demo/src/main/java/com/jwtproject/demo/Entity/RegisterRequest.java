@@ -1,6 +1,6 @@
 package com.jwtproject.demo.Entity;
 
-import jakarta.validation.constraints.Email;
+import com.jwtproject.demo.Rules.MailRFCConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,11 +17,12 @@ public class RegisterRequest {
     private String password;
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @MailRFCConstraint
     @Size(max = 100, message = "Email must be at most 100 characters long")
     private String email;
+
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
-    @NotBlank(message = "Roles is required")
+
     private String roles;
 }
