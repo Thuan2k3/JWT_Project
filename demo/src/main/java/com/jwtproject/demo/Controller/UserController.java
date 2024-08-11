@@ -48,10 +48,6 @@ public class UserController {
         return "Welcome this endpoint is not secure";
     }
 
-//    @PostMapping("/addNewUser")
-//    public String addNewUser(@RequestBody UserInfo userInfo) {
-//        return service.addUser(userInfo);
-//    }
     @PostMapping("auth/register")
     public ResponseEntity<ReponseObject> register(@Valid @RequestBody RegisterRequest registerRequest) {
         // Create ReposeObject with default value
@@ -136,14 +132,7 @@ public class UserController {
             throw new BadCredentialsException("Invalid Username or Password!");
         }
     }
-//    public GenerateTokenReponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-//        if (authentication.isAuthenticated()) {
-//            return new GenerateTokenReponse(jwtService.generateToken(authRequest.getUsername()));
-//        } else {
-//            throw new UsernameNotFoundException("invalid user request !");
-//        }
-//    }
+
 @ExceptionHandler(BadCredentialsException.class)
 public String exceptionHandler() {
     return "Credentials Invalid !!";
