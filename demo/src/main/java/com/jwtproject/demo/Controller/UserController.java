@@ -1,10 +1,10 @@
 package com.jwtproject.demo.Controller;
 
-import com.jwtproject.demo.Entity.AuthRequest;
-import com.jwtproject.demo.Entity.RegisterRequest;
+import com.jwtproject.demo.PayLoad.Request.AuthRequest;
+import com.jwtproject.demo.PayLoad.Request.RegisterRequest;
 import com.jwtproject.demo.Entity.UserInfo;
-import com.jwtproject.demo.Reponse.GenerateTokenReponse;
-import com.jwtproject.demo.Reponse.ReponseObject;
+import com.jwtproject.demo.PayLoad.Reponse.GenerateTokenReponse;
+import com.jwtproject.demo.PayLoad.Reponse.ReponseObject;
 import com.jwtproject.demo.Repository.UserInfoRepository;
 import com.jwtproject.demo.Service.JwtService;
 import com.jwtproject.demo.Service.UserInfoService;
@@ -19,9 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -62,7 +60,7 @@ public class UserController {
             newUser.setPassword(registerRequest.getPassword());
             newUser.setName(registerRequest.getName());
             newUser.setPhoneNumber(registerRequest.getPhoneNumber());
-            newUser.setRoles(registerRequest.getRoles());
+            newUser.setRoles(new String("ROLE_USER"));
 
             // Handle user creation and update ResponseObject
             boolean isCreated = service.addUser(newUser);

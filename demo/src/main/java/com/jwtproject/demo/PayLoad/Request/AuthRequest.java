@@ -1,4 +1,4 @@
-package com.jwtproject.demo.Entity;
+package com.jwtproject.demo.PayLoad.Request;
 
 import com.jwtproject.demo.Rules.MailRFCConstraint;
 import jakarta.validation.constraints.NotBlank;

@@ -31,6 +31,6 @@ public class UserInfo {
     @Length(max = 15)
     private String phoneNumber;
 
-    @Column(name = "roles", columnDefinition = "varchar(50) default \"ROLE_USER\"")
+    @Column(name = "roles", columnDefinition = "varchar(50) default 'ROLE_USER'")
     private String roles;
 }

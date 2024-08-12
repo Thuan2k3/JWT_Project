@@ -1,4 +1,4 @@
-package com.jwtproject.demo.Reponse;
+package com.jwtproject.demo.PayLoad.Reponse;
 
 import lombok.Builder;
 import lombok.Data;
