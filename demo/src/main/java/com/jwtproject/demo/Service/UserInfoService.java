@@ -4,7 +4,9 @@ package com.jwtproject.demo.Service;
 
 import com.jwtproject.demo.Entity.UserInfo;
 import com.jwtproject.demo.Repository.UserInfoRepository;
+import com.jwtproject.demo.Validators.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,10 +34,14 @@ public class UserInfoService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
     }
 
-    public String addUser(UserInfo userInfo) {
-        userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-        repository.save(userInfo);
-        return "User Added Successfully";
+    public boolean addUser(UserInfo userInfo) {
+        try {
+            userInfo.setPassword(encoder.encode(userInfo.getPassword()));
+            repository.save(userInfo);
+            return true;
+        }catch (DataIntegrityViolationException exception){
+            return false;
+        }
     }
 
 

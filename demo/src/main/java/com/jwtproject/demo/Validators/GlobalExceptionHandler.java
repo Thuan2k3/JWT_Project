@@ -1,6 +1,6 @@
 package com.jwtproject.demo.Validators;
 
-import com.jwtproject.demo.Reponse.ReponseObject;
+import com.jwtproject.demo.PayLoad.Reponse.ReponseObject;
 import com.jwtproject.demo.Utils.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
